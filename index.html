@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Legion</title>
+  <!-- add icon link -->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link rel="icon" href="assets/gfx/favicons/logo.png" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/gfx/favicons/logo.png" type="image/x-icon">
+  <link rel="stylesheet" type="text/css" href="style.css" />
+  <link rel="stylesheet" type="text/css" href="vernav.css" />
+  <link rel="stylesheet" type="text/css" href="section.css" />
+</head>
+
+<body>
+  <header>
+    <Center>
+      <div class="header">
+        <img src="assets/gfx/favicons/legion_lr.png" alt="logo" style="width:1350px;height:300px;" />
+    </Center>
+    </div>
+    <div class="button_container" id="toggle">
+      <span class="top"></span>
+      <span class="middle"></span>
+      <span class="bottom"></span>
+    </div>
+    <!--vertical nav bar html-->
+    <nav class="vertical-navigation">
+      <ul class="vertical-menu">
+        <li class="link in"><span class="dot in"></span> <a href="section first"></a></li>
+        <li class="link"><span class="dot"></span> <a></a></li>
+        <li class="link"><span class="dot"></span> <a></a></li>
+        <li class="link last"><span class="dot"></span> <a></a></li>
+  
+        <li class="link track top"></li>
+      </ul>
+    </nav>
+    <!-- vertical nav bar end-->
+    <div class="overlay" id="overlay">
+      <nav class="overlay-menu">
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Work</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <section class="section first">
+    First section
+  </section>
+  <section id="scroll" class="section horizontal">
+    <div class="scroll js-horizontal-scroll">
+      <div class="item">1</div>
+      <div class="item">2</div>
+      <div class="item">3</div>
+      <div class="item">4</div>
+      <div class="item">5</div>
+      <div class="item">6</div>
+      <div class="item">7</div>
+      <div class="item">8</div>
+      <div class="item">9</div>
+      <div class="item">10</div>
+    </div>
+  
+  <section class="section last">
+    Last section
+  </section>
+</section>
+
+  <!-- jquery for tooggle nav-->
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script type="text/javascript">
+    $('#toggle').click(function () {
+      $(this).toggleClass('active');
+      $('#overlay').toggleClass('open');
+    });
+    //vertical nav bar start jquery
+    var currentItem = 0;
+    var clicked = false;
+
+    $(document).ready(function () {
+
+      $('nav, ul').addClass('entrance');
+
+      setTimeout(function () {
+        $('ul a, .dot').addClass('animate');
+        $('.track').fadeIn();
+      }, 1500);
+
+      $('.link').on('click', function () {
+
+        if (!clicked) {
+          clicked = true;
+          var el = $(this);
+          var index = $(el).index();
+
+          navigate(el, index, currentItem);
+
+          currentItem = index;
+
+          $('.link, .link .dot').removeClass('in');
+
+          $(el).addClass('in').find('.dot').addClass('in');
+        }
+      });
+
+    });
+
+
+    function navigate(el, index, currentNav) {
+      var oldPos = $('.link').eq(currentNav).offset();
+      var newPos = $('.link').eq(index).offset();
+
+      if (index > currentNav) {
+
+        var velocity = (index - currentNav);
+        var speed = ((velocity * 0.5) - (velocity - 1) * 0.3);
+        var calc = (newPos.top - oldPos.top) + 15;
+
+        TweenMax.to($('.track'), speed, { height: calc, ease: Expo.easeOut });
+
+        setTimeout(function () {
+          TweenMax.to($('.track'), speed, { height: 15, top: newPos.top - 65, ease: Expo.easeOut });
+        }, (speed * 1000));
+
+      } else {
+        var bottomPos = $('ul').height() - (oldPos.top + 29);
+        var newBottomPos = $('ul').height() - (newPos.top);
+
+        var velocity = (currentNav - index);
+        var speed = ((velocity * 0.5) - (velocity - 1) * 0.3);
+
+        $('.track').css({ 'top': 'auto', 'bottom': bottomPos });
+
+        TweenMax.to($('.track'), speed, { height: ((oldPos.top - newPos.top) + 14), ease: Expo.easeOut });
+
+        setTimeout(function () {
+          TweenMax.to($('.track'), speed, { height: 15, bottom: newBottomPos, ease: Expo.easeOut });
+          $(el).addClass('in').find('.dot').addClass('in');
+
+          var newPos = $('.link').eq(index).position();
+          $('.track').css({ 'top': newPos.top + 5, 'bottom': 'auto' });
+
+        }, (speed * 1000));
+      }
+
+      setTimeout(function () {
+        clicked = false;
+      }, 1200);
+    }
+// vertical nav bar end
+  </script>
+
+
+  </script>
+
+</body>
+
+</html>
